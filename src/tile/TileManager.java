@@ -1,6 +1,6 @@
 package tile;
 
-import LostThicket.GamePanel;
+import Main.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,8 +11,8 @@ import java.io.InputStreamReader;
 
 public class TileManager {
     GamePanel gp;
-    Tile[] tile;
-    int mapTileNum[][];
+    public Tile[] tile;
+    public int mapTileNum[][];
 
     public TileManager(GamePanel gp){
         this.gp = gp;
@@ -28,10 +28,11 @@ public class TileManager {
             tile[0].image = ImageIO.read(getClass(). getResourceAsStream("/tiles/grass_1.png"));
 
             tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass(). getResourceAsStream("/tiles/sand.jpg"));
+            tile[1].image = ImageIO.read(getClass(). getResourceAsStream("/tiles/sand.png"));
 
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(getClass(). getResourceAsStream("/tiles/water.png"));
+            tile[2].collision=true;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,7 +76,13 @@ public class TileManager {
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-            g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
+                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            }
+
             worldCol++;
 
             if(worldCol == gp.maxWorldCol){
