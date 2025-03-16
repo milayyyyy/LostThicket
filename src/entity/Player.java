@@ -47,6 +47,12 @@ public class Player extends Entity {
                 left2 = ImageIO.read(getClass().getResourceAsStream("/player/Elden_left2.png"));
                 right1 = ImageIO.read(getClass().getResourceAsStream("/player/Elden_right1.png"));
                 right2 = ImageIO.read(getClass().getResourceAsStream("/player/Elden_right2.png"));
+
+                attackLeft1 = ImageIO.read(getClass().getResourceAsStream("/player/Elden_attack_left1.png"));
+                attackLeft2 = ImageIO.read(getClass().getResourceAsStream("/player/Elden_attack_left2.png"));
+                attackRight1 = ImageIO.read(getClass().getResourceAsStream("/player/Elden_attack_right1.png"));
+                attackRight2 = ImageIO.read(getClass().getResourceAsStream("/player/Elden_attack_right2.png"));
+
             } else if (gp.chosenCharacter == 1) { // Briana
                 up1 = ImageIO.read(getClass().getResourceAsStream("/player/Briana_up1.png"));
                 up2 = ImageIO.read(getClass().getResourceAsStream("/player/Briana_up2.png"));
@@ -68,6 +74,9 @@ public class Player extends Entity {
 
                 attackLeft1 = ImageIO.read(getClass().getResourceAsStream("/player/Orion_attack_left1.png"));
                 attackLeft2 = ImageIO.read(getClass().getResourceAsStream("/player/Orion_attack_left2.png"));
+                attackRight1 = ImageIO.read(getClass().getResourceAsStream("/player/Orion_attack_right1.png"));
+                attackRight2 = ImageIO.read(getClass().getResourceAsStream("/player/Orion_attack_right2.png"));
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,15 +94,22 @@ public class Player extends Entity {
             attackCooldown--;
         }
 
-        //  Call attack() when attacking
         if (keyH.spacePressed && !isAttacking && attackCooldown == 0) {
-            if (gp.chosenCharacter == 2 && direction.equals("left")) {
-                isAttacking = true;
-                attackFrame = 0;
-                attackCooldown = 20;
-                attack();
+            if (gp.chosenCharacter == 0 || gp.chosenCharacter == 2) {
+                if (direction.equals("left")) {
+                    isAttacking = true;
+                    attackFrame = 0;
+                    attackCooldown = 20;
+                    attack("left");
+                } else if (direction.equals("right")) {
+                    isAttacking = true;
+                    attackFrame = 0;
+                    attackCooldown = 20;
+                    attack("right");
+                }
             }
         }
+
 
         if (isAttacking) {
             attackFrame++;
@@ -118,18 +134,10 @@ public class Player extends Entity {
 
             if (!collisionOn) {
                 switch (direction) {
-                    case "up":
-                        worldY -= speed;
-                        break;
-                    case "down":
-                        worldY += speed;
-                        break;
-                    case "left":
-                        worldX -= speed;
-                        break;
-                    case "right":
-                        worldX += speed;
-                        break;
+                    case "up": worldY -= speed; break;
+                    case "down": worldY += speed; break;
+                    case "left": worldX -= speed; break;
+                    case "right": worldX += speed; break;
                 }
             }
 
@@ -142,12 +150,18 @@ public class Player extends Entity {
     }
 
 
+
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
-        if (isAttacking && gp.chosenCharacter == 2 && direction.equals("left")) {
-            image = (attackFrame % 2 == 0) ? attackLeft1 : attackLeft2;
-        } else {
+        if (isAttacking && (gp.chosenCharacter == 0 || gp.chosenCharacter == 2)) {
+            if (direction.equals("left")) {
+                image = (attackFrame % 2 == 0) ? attackLeft1 : attackLeft2;
+            } else if (direction.equals("right")) {
+                image = (attackFrame % 2 == 0) ? attackRight1 : attackRight2;
+            }
+        }
+        else {
             switch (direction) {
                 case "up":
                     image = (spriteNum == 1) ? up1 : up2;
@@ -172,18 +186,20 @@ public class Player extends Entity {
     }
 
 
-    public void attack() {
 
+    public void attack(String attackDirection) {
         for (int i = 0; i < gp.npc.length; i++) {
-            if (gp.npc[i] != null && isNpcInRange(gp.npc[i])) {
+            if (gp.npc[i] != null && isNpcInRange(gp.npc[i], attackDirection)) {
                 gp.npc[i].takeDamage(1);
             }
         }
     }
 
 
-    public boolean isNpcInRange(Entity npc) {
+
+    public boolean isNpcInRange(Entity npc, String attackDirection) {
         int attackRange = gp.tileSize / 2;
+
         int npcLeft = npc.worldX;
         int npcRight = npc.worldX + gp.tileSize;
         int npcTop = npc.worldY;
@@ -194,10 +210,17 @@ public class Player extends Entity {
         int playerTop = worldY;
         int playerBottom = worldY + gp.tileSize;
 
-        boolean hit = (playerRight > npcLeft - attackRange && playerLeft < npcRight + attackRange &&
-                playerBottom > npcTop - attackRange && playerTop < npcBottom + attackRange);
+        boolean hit = false;
+
+        if (attackDirection.equals("left")) {
+            hit = (playerLeft - attackRange < npcRight && playerLeft > npcLeft);
+        } else if (attackDirection.equals("right")) {
+            hit = (playerRight + attackRange > npcLeft && playerRight < npcRight);
+        }
+
 
 
         return hit;
     }
+
 }
