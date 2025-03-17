@@ -115,36 +115,36 @@ public class UI {
             } catch(IOException e) {
                 e.printStackTrace();
             }
-            g2.drawImage(characterElden, 3*gp.tileSize, 4*gp.tileSize, gp.tileSize, gp.tileSize, null);
-            g2.drawImage(characterBriana, 7*gp.tileSize, 4*gp.tileSize, gp.tileSize, gp.tileSize, null);
-            g2.drawImage(characterOrion, 11*gp.tileSize, 4*gp.tileSize, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(characterElden, 6*gp.tileSize, 6*gp.tileSize, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(characterBriana, 10*gp.tileSize, 6*gp.tileSize, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(characterOrion, 14*gp.tileSize, 6*gp.tileSize, gp.tileSize, gp.tileSize, null);
 
             text = "Elden";
             g2.setFont(g2.getFont().deriveFont(15f));
-            g2.drawString(text, 3*gp.tileSize, 6*gp.tileSize);
+            g2.drawString(text, 6*gp.tileSize, 8*gp.tileSize);
             if(commandNum == 0){
-                g2.drawString(">", 2*gp.tileSize, 6*gp.tileSize);
+                g2.drawString(">", 5*gp.tileSize, 8*gp.tileSize);
             }
 
             text = "Briana";
             g2.setFont(g2.getFont().deriveFont(15f));
-            g2.drawString(text, 7*gp.tileSize, 6*gp.tileSize);
+            g2.drawString(text, 10*gp.tileSize, 8*gp.tileSize);
             if(commandNum == 1){
-                g2.drawString(">", 6*gp.tileSize, 6*gp.tileSize);
+                g2.drawString(">", 9*gp.tileSize, 8*gp.tileSize);
             }
 
             text = "Orion";
             g2.setFont(g2.getFont().deriveFont(15f));
-            g2.drawString(text, 11*gp.tileSize, 6*gp.tileSize);
+            g2.drawString(text, 14*gp.tileSize, 8*gp.tileSize);
             if(commandNum == 2){
-                g2.drawString(">", 10*gp.tileSize, 6*gp.tileSize);
+                g2.drawString(">", 13*gp.tileSize, 8*gp.tileSize);
             }
 
             text = "Back";
             g2.setFont(g2.getFont().deriveFont(15f));
-            g2.drawString(text, 2*gp.tileSize, 10*gp.tileSize);
+            g2.drawString(text, 2*gp.tileSize, 15*gp.tileSize);
             if(commandNum == 3){
-                g2.drawString(">", 1*gp.tileSize, 10*gp.tileSize);
+                g2.drawString(">", 1*gp.tileSize, 15*gp.tileSize);
             }
         }
 }
